@@ -1,6 +1,6 @@
-let operand1 = 0;
-let operator = null;
-let operand2 = null;
+let operand1 = "0";
+let operator = "";
+let operand2 = "";
 
 const display = document.getElementById('screen');
 console.log(display)
@@ -26,10 +26,12 @@ const equalsBtn = document.getElementById('equals');
 
 clearBtn.addEventListener('click', function() {
     display.textContent = 0;
+    clickOperatorButton();
 })
 
 plusMinusBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
+
 })
 
 modulusBtn.addEventListener('click', function() {
@@ -45,7 +47,11 @@ multiplyBtn.addEventListener('click', function() {
 })
 
 plusBtn.addEventListener('click', function() {
+    console.log(plusBtn.value)
     clickOperatorButton(this.id)
+    operand1 = display.textContent
+    operator = plusBtn.value
+
 })
 
 minusBtn.addEventListener('click', function() {
@@ -60,6 +66,7 @@ equalsBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
 })
 
+//Update display
 zeroBtn.addEventListener('click', function() {
     if(display.textContent.startsWith(0) || display.textContent.startsWith("0")){
         display.textContent = 0
@@ -140,10 +147,11 @@ nineBtn.addEventListener('click', function() {
     }
 })
 
+//Changes colour of selected operator button
 function clickOperatorButton(button){
     const buttons = document.querySelectorAll('button');
     
-    console.log(buttons)
+    //console.log(buttons)
     console.log("Clicked: " + button)
 
     buttons.forEach(function(b) {
