@@ -43,9 +43,7 @@ button{
     background-color: #e03e22;
 }
 
-.operator:active{
-    background-color: #d47261;
-}
+
 
 .operand{
     background-color: #197de3;
@@ -61,6 +59,10 @@ button{
 
 .clear:active{
     background-color: #ffe26e;
+}
+
+.activeButton {
+    background-color: #d47261;
 }
 
 #zero {
