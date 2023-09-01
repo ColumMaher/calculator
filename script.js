@@ -1,6 +1,7 @@
 let operand1 = "0";
 let operator = "";
 let operand2 = "";
+let resetScreen = false;
 
 const display = document.getElementById('screen');
 console.log(display)
@@ -31,120 +32,85 @@ clearBtn.addEventListener('click', function() {
 
 plusMinusBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
-
+    setOperator("+/-")
 })
 
 modulusBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
+    setOperator("%")
 })
 
 divideBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
+    setOperator("/")
+    
 })
 
 multiplyBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
+    setOperator("*")   
 })
 
 plusBtn.addEventListener('click', function() {
     console.log(plusBtn.value)
     clickOperatorButton(this.id)
-    operand1 = display.textContent
-    operator = plusBtn.value
-
+    setOperator("+")
 })
 
 minusBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
+    setOperator("-")
 })
 
 decimalBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
+    decimal()
 })
 
 equalsBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
+    evaluate()
 })
 
 //Update display
 zeroBtn.addEventListener('click', function() {
-    if(display.textContent.startsWith(0) || display.textContent.startsWith("0")){
-        display.textContent = 0
-    } else {
-        display.textContent = display.textContent + 0
-    }
+    appendNumber(0)
 })
 
 oneBtn.addEventListener('click', function() {
-    if(display.textContent === 0 || display.textContent === "0"){
-        display.textContent = 1
-    } else{
-        display.textContent = display.textContent + 1
-    }
+    appendNumber(1)
 })
 
 twoBtn.addEventListener('click', function() {
-    if(display.textContent === 0 || display.textContent === "0"){
-        display.textContent = 2
-    } else {
-        display.textContent = display.textContent + 2
-    }
+    appendNumber(2)
 })
 
 threeBtn.addEventListener('click', function() {
-    if(display.textContent === 0 || display.textContent === "0"){
-        display.textContent = 3
-    } else {
-        display.textContent = display.textContent + 3
-    }
+    appendNumber(3)
 })
 
 fourBtn.addEventListener('click', function() {
-    if(display.textContent === 0 || display.textContent === "0"){
-        display.textContent = 4
-    } else {
-        display.textContent = display.textContent + 4
-    }
+    appendNumber(4)
 })
 
 fiveBtn.addEventListener('click', function() {
-    if(display.textContent === 0 || display.textContent === "0"){
-        display.textContent = 5
-    } else {
-        display.textContent = display.textContent + 5
-    }
+    appendNumber(5)
 })
 
 sixBtn.addEventListener('click', function() {
-    if(display.textContent === 0 || display.textContent === "0"){
-        display.textContent = 6
-    } else {
-        display.textContent = display.textContent + 6
-    }
+    appendNumber(6)
 })
 
 sevenBtn.addEventListener('click', function() {
-    if(display.textContent === 0 || display.textContent === "0"){
-        display.textContent = 7
-    } else {
-        display.textContent = display.textContent + 7
-    }
+    appendNumber(7)
 })
 
 eightBtn.addEventListener('click', function() {
-    if(display.textContent === 0 || display.textContent === "0"){
-        display.textContent = 8
-    } else {
-        display.textContent = display.textContent + 8
-    }
+    appendNumber(8)
 })
 
 nineBtn.addEventListener('click', function() {
-    if(display.textContent === 0 || display.textContent === "0"){
-        display.textContent = 9
-    } else {
-        display.textContent = display.textContent + 9
-    }
+    appendNumber(9)
 })
 
 //Changes colour of selected operator button
@@ -165,14 +131,19 @@ function clickOperatorButton(button){
 
 function clear(){
     display.textContent = 0
+    operand1 = "0"
+    operand2 = ""
+    operator = ""
 }
 
 function plusMinus(num){
-
+    if(num < 0){
+        return -(num)
+    }
 }
 
 function modulus(num1, num2){
-    
+    return num1 % num2
 }
 
 function add(num1, num2){
@@ -185,18 +156,75 @@ function multiply(num1, num2){
     return num1 * num2
 }
 function divide(num1, num2){
-    return num1 / num2
+    return Math.round((num1 / num2) * 1000) / 1000
 }
 
-function decimal(num){
-
+function decimal(){
+    if(display.textContent.includes(".")){
+        alert("Only one decimal point allowed!")
+    }
+    else {
+        display.textContent = display.textContent + "."
+    }
 }
 
-function equals(){
+function appendNumber(num){
+    if( (display.textContent === "0" && num === 0)|| resetScreen){
+        resetDisplay()
+    }
+    if(display.textContent === "0"){
+        display.textContent = num; 
+    }
+    else {
+        display.textContent += num;
+    }
+}
 
+function setOperator(operation) {
+    if(operator !== null ) evaluate()
+    operand1 = display.textContent
+    operator = operation
+    resetScreen = true;
+}
+
+function resetDisplay(){
+    display.textContent = "0"
+    resetScreen = false;
 }
 
 
-function operate(operator, operand1, operand2){
-    
+function operate(operation, num1, num2){
+    let a = Number(num1)
+    let b = Number(num2)
+
+    switch(operation){
+        case "+":
+            return add(a, b);
+        case "-":
+            return subtract(a, b);
+        case "*":
+            return multiply(a, b);
+        case "/":
+            if(b === 0) return null
+            else return divide(a, b);
+        case "%":
+            return modulus(a, b)
+        default:
+            return null;
+    }
+}
+
+function evaluate(){
+    if(operator === "" || resetScreen){
+        return
+    }
+    if(operator === "/" && display.textContent === "0"){
+        alert("You can't divide by 0!")
+        return
+    }
+    operand2 = display.textContent
+
+    display.textContent = operate(operator, operand1, operand2)
+
+    operator = ""
 }
