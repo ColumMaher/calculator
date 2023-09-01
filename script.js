@@ -32,7 +32,7 @@ clearBtn.addEventListener('click', function() {
 
 plusMinusBtn.addEventListener('click', function() {
     clickOperatorButton(this.id)
-    setOperator("+/-")
+    display.textContent = plusMinus(display.textContent)
 })
 
 modulusBtn.addEventListener('click', function() {
@@ -137,8 +137,11 @@ function clear(){
 }
 
 function plusMinus(num){
-    if(num < 0){
-        return -(num)
+    num = Number(num)
+    if(num >= 0){
+        return -num
+    } else {
+        return Math.abs(number)
     }
 }
 
