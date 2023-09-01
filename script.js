@@ -162,6 +162,7 @@ function divide(num1, num2){
 function decimal(){
     if(display.textContent.includes(".")){
         alert("Only one decimal point allowed!")
+        resetDisplay()
     }
     else {
         display.textContent = display.textContent + "."
@@ -220,6 +221,7 @@ function evaluate(){
     }
     if(operator === "/" && display.textContent === "0"){
         alert("You can't divide by 0!")
+        resetDisplay()
         return
     }
     operand2 = display.textContent
